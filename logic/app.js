@@ -393,6 +393,7 @@ punctuationModeButton.addEventListener('click', () => {
 
 function updateLayoutUI() {
 	// if custom input is selected, show the ui for custom keyboards
+
 	if (currentLayout == 'custom' && !customLayoutMap) {
 		openUIButton.style.display = 'block';
 		startCustomKeyboardEditing();
@@ -400,7 +401,8 @@ function updateLayoutUI() {
 		customInput.style.transform = 'scaleX(0)';
 		openUIButton.style.display = 'none';
 	}
-	if (customLayoutMap) {
+	if (currentLayout == 'custom' && customLayoutMap) {
+		openUIButton.style.display = 'block';
 		keyboardMap = JSON.parse(localStorage.getItem('customKeyboard'));
 		letterDictionary = JSON.parse(localStorage.getItem('customLevelsDictionary'));
 	} else {
@@ -409,8 +411,6 @@ function updateLayoutUI() {
 		letterDictionary = levelDictionaries[currentLayout];
 	}
 	// change keyboard map and key dictionary
-
-
 	if (currentLayout == 'custom') {
 		customUIKeyInput.focus();
 	}
@@ -434,8 +434,8 @@ openUIButton.addEventListener('click', () => {
 // called whenever a user opens the custom editor. Sets correct displays and saves an initial state
 // of the keyboard to refer back to if the user wants to discard changes
 function startCustomKeyboardEditing() {
-	initialCustomKeyboardState = Object.assign({}, layoutMaps['custom']);
-	initialCustomLevelsState = Object.assign({}, levelDictionaries['custom']);
+	initialCustomKeyboardState = Object.assign({}, JSON.parse(localStorage.getItem('customKeyboard')));
+	initialCustomLevelsState = Object.assign({}, JSON.parse(localStorage.getItem('customLevelsDictionary')));
 	// customInput.style.display = 'flex';
 	customInput.style.transform = 'scaleX(1)';
 	let k = document.querySelector('.defaultSelectedKey');
